@@ -2,8 +2,10 @@ import flask
 from lib import Bug
 from logging import StreamHandler
 import logging
+from flask_cors import CORS, cross_origin
 
-app = flask.Flask(__name__)
+app = flask.Flask(__name__, static_url_path='/web', static_folder='../web')
+CORS(app)
 bug = Bug()
 
 
@@ -12,37 +14,41 @@ def index():
     result = ['<pre>%s</pre>' % bug.graphic]
     result.append('<ul>')
     for x in ['l', 'h', 'f', 'o', 'p', 'w']:
-        result.append('<a href="/%(cmd)s">%(cmd)s</a>' % {'cmd': x})
+        result.append('<a href="/cmd/%(cmd)s">%(cmd)s</a>' % {'cmd': x})
 
     result.append('</ul>')
     return "\n".join(result)
 
-@app.route("/l")
+@app.route("/status")
+def status():
+    return flask.jsonify(**bug.getGpioState())
+
+@app.route("/cmd/l")
 def toggleLowBeamLight():
     bug.toggleLowBeamLight()
     return flask.jsonify(**bug.getGpioState())
 
-@app.route("/h")
+@app.route("/cmd/h")
 def toggleHeadLight():
     bug.toggleHeadLight()
     return flask.jsonify(**bug.getGpioState())
 
-@app.route("/f")
+@app.route("/cmd/f")
 def doFlash():
     bug.doFlash()
     return flask.jsonify(**bug.getGpioState())
 
-@app.route("/o")
+@app.route("/cmd/o")
 def toggleTurnLightLeft():
     bug.toggleTurnLightLeft()
     return flask.jsonify(**bug.getGpioState())
 
-@app.route("/p")
+@app.route("/cmd/p")
 def toggleTurnLightRight():
     bug.toggleTurnLightRight()
     return flask.jsonify(**bug.getGpioState())
 
-@app.route("/w")
+@app.route("/cmd/w")
 def toggleWarningLights():
     bug.toggleWarningLights()
     return flask.jsonify(**bug.getGpioState())
