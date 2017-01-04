@@ -1,0 +1,13 @@
+<ul>
+  <li>headlight: <strong>{{ status.headlight }}</strong></li>
+  <li>LowBeam: <strong>{{ status.lowbeam }}</strong></li>
+  <li>turnlight_left: <strong>{{ status.turnlight_left }}</strong></li>
+  <li>turnlight_right: <strong>{{ status.turnlight_right }}</strong></li>
+</ul>
+
+<button (click)="toggleLowBeamLight()">LowBeam</button>
+<button (click)="toggleHeadLight()">HeadLight</button>
+<button (click)="doFlash()">Flash</button>
+<button (click)="toggleTurnLightLeft()">Left Turn</button>
+<button (click)="toggleTurnLightRight()">Right Turn</button>
+<button (click)="toggleWarningLights()">Warning</button>
