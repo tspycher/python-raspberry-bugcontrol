@@ -5,8 +5,9 @@ import logging
 from flask_cors import CORS, cross_origin
 
 app = flask.Flask(__name__, static_url_path='/web', static_folder='../static-web')
+app.logger.setLevel(logging.INFO)
 CORS(app)
-bug = Bug()
+bug = Bug(logger=app.logger)
 
 
 @app.route("/")
@@ -61,5 +62,5 @@ if __name__ == "__main__":
     app.logger.warning("running")
     bug.setLogger(app.logger)
     bug.bringToLife(interactive=False)
-    app.run()
+    app.run(host='0.0.0.0')
 

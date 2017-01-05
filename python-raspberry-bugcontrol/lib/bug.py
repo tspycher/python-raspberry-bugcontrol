@@ -2,6 +2,8 @@ import threading
 import time
 import curses
 
+from . import Relay
+
 class Bug(object):
 
     INTERVAL = 0.5
@@ -33,10 +35,20 @@ class Bug(object):
     _current_gpio = None
 
     _logger = None
+    _relay = None
 
-    def __init__(self):
+    _relay_mapping = {
+            "headlight": 2,
+            "lowbeam": 1,
+            "turnlight_left": 3,
+            "turnlight_right": 4
+        }
+
+    def __init__(self, logger=None):
         super(Bug, self).__init__()
         self._current_gpio = {}
+        self.setLogger(logger)
+        self._relay = Relay(logger=self._logger)
 
     def setLogger(self, logger):
         self._logger = logger
@@ -189,7 +201,15 @@ class Bug(object):
         if diff:
             self._current_gpio = new_gpio
             if self._logger:
-                self._logger.warning("GPIO State change: %s" % str(diff))
+                self._logger.info("GPIO State change: %s" % str(diff))
+
+            for light in diff.keys():
+                relay_port = self._relay_mapping[light]
+                if diff[light]:
+                    getattr(self._relay, 'on_%i' % relay_port)()
+                else:
+                    getattr(self._relay, 'off_%i' % relay_port)()
+
 
     def life(self, interactive=False):
         if interactive:
