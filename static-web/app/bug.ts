@@ -14,37 +14,37 @@ export class BugService {
   }
 
   toggleLowBeamLight() {
-    var url = "/cmd/l";
+    var url = "http://10.84.1.108/cmd/l";
     return this.http.get(url).map(res => res.json());
   }
 
   toggleHeadLight() {
-    var url = "/cmd/h";
+    var url = "http://10.84.1.108/cmd/h";
     return this.http.get(url).map(res => res.json());
   }
 
   doFlash() {
-    var url = "/cmd/f";
+    var url = "http://10.84.1.108/cmd/f";
     return this.http.get(url).map(res => res.json());
   }
 
   toggleTurnLightLeft() {
-    var url = "/cmd/o";
+    var url = "http://10.84.1.108/cmd/o";
     return this.http.get(url).map(res => res.json());
   }
 
   toggleTurnLightRight() {
-    var url = "/cmd/p";
+    var url = "http://10.84.1.108/cmd/p";
     return this.http.get(url).map(res => res.json());
   }
 
   toggleWarningLights() {
-    var url = "/cmd/w";
+    var url = "http://10.84.1.108/cmd/w";
     return this.http.get(url).map(res => res.json());
   }
 
   status() {
-    var url = "/status";
+    var url = "http://10.84.1.108/status";
     return this.http.get(url).map(res => res.json());
   }
 }
