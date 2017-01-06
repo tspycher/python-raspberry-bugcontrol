@@ -215,6 +215,7 @@ class Bug(object):
         if interactive:
             stdscr = curses.initscr()
             stdscr.nodelay(True)
+
         while True:
             if interactive:
                 stdscr.addstr(1, 0, self.graphic)
@@ -231,6 +232,7 @@ class Bug(object):
             else:
                 self._controlGPIO()
             time.sleep(Bug.INTERVAL)
+
 
     def _interpretInput(self, input):
         input = str(input).lower()
@@ -249,6 +251,8 @@ class Bug(object):
 
     def bringToLife(self, interactive=False):
         t = threading.Thread(target=self.life, args=(interactive,))
+        if not interactive:
+            t.daemon = True
         t.start()
         if self._logger: self._logger.warning("Started bug in seperate thread")
 
