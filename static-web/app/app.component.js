@@ -8,14 +8,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var core_1 = require('@angular/core');
 var bug_1 = require("./bug");
+var platform_browser_1 = require('@angular/platform-browser');
 var AppComponent = (function () {
-    function AppComponent(bug) {
+    function AppComponent(bug, document) {
         this.bug = bug;
+        this.document = document;
         this.status = {};
         //this.updateStatus()
         this.startLive();
+        this.bug.setBaseUrl(this.document.location.href);
     }
     AppComponent.prototype.startLive = function () {
         var _this = this;
@@ -57,8 +63,9 @@ var AppComponent = (function () {
             selector: 'bug',
             templateUrl: 'templates/bug.html',
             providers: [bug_1.BugService],
-        }), 
-        __metadata('design:paramtypes', [bug_1.BugService])
+        }),
+        __param(1, core_1.Inject(platform_browser_1.DOCUMENT)), 
+        __metadata('design:paramtypes', [bug_1.BugService, Object])
     ], AppComponent);
     return AppComponent;
 }());

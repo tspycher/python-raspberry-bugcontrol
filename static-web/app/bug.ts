@@ -4,47 +4,60 @@
 import 'rxjs/add/operator/map'
 import {Http} from "@angular/http";
 
+
 export class BugService {
+
+  private baseurl:string;
+
   static get parameters() {
     return [[Http]];
   }
 
   constructor (private http:Http) {
+      this.setBaseUrl("http://127.0.0.1:5000/");
+  }
 
+  setBaseUrl(url:string) {
+      this.baseurl = url;
+  }
+
+  createUrl(url:string) {
+    return this.baseurl + url;
   }
 
   toggleLowBeamLight() {
-    var url = "http://10.84.1.108/cmd/l";
+    var url = this.createUrl("cmd/l");
     return this.http.get(url).map(res => res.json());
   }
 
   toggleHeadLight() {
-    var url = "http://10.84.1.108/cmd/h";
+    var url = this.createUrl("cmd/h");
     return this.http.get(url).map(res => res.json());
   }
 
   doFlash() {
-    var url = "http://10.84.1.108/cmd/f";
+    var url = this.createUrl("cmd/f");
     return this.http.get(url).map(res => res.json());
   }
 
   toggleTurnLightLeft() {
-    var url = "http://10.84.1.108/cmd/o";
+    var url = this.createUrl("cmd/o");
     return this.http.get(url).map(res => res.json());
   }
 
   toggleTurnLightRight() {
-    var url = "http://10.84.1.108/cmd/p";
+    var url = this.createUrl("cmd/p");
     return this.http.get(url).map(res => res.json());
   }
 
   toggleWarningLights() {
-    var url = "http://10.84.1.108/cmd/w";
+    var url = this.createUrl("cmd/w");
     return this.http.get(url).map(res => res.json());
   }
 
   status() {
-    var url = "http://10.84.1.108/status";
+    var url = this.createUrl("status");
     return this.http.get(url).map(res => res.json());
   }
 }
+

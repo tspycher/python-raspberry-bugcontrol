@@ -7,6 +7,7 @@ var http_1 = require("@angular/http");
 var BugService = (function () {
     function BugService(http) {
         this.http = http;
+        this.setBaseUrl("http://127.0.0.1:5000/");
     }
     Object.defineProperty(BugService, "parameters", {
         get: function () {
@@ -15,32 +16,38 @@ var BugService = (function () {
         enumerable: true,
         configurable: true
     });
+    BugService.prototype.setBaseUrl = function (url) {
+        this.baseurl = url;
+    };
+    BugService.prototype.createUrl = function (url) {
+        return this.baseurl + url;
+    };
     BugService.prototype.toggleLowBeamLight = function () {
-        var url = "http://127.0.0.1:5000/cmd/l";
+        var url = this.createUrl("cmd/l");
         return this.http.get(url).map(function (res) { return res.json(); });
     };
     BugService.prototype.toggleHeadLight = function () {
-        var url = "http://127.0.0.1:5000/cmd/h";
+        var url = this.createUrl("cmd/h");
         return this.http.get(url).map(function (res) { return res.json(); });
     };
     BugService.prototype.doFlash = function () {
-        var url = "http://127.0.0.1:5000/cmd/f";
+        var url = this.createUrl("cmd/f");
         return this.http.get(url).map(function (res) { return res.json(); });
     };
     BugService.prototype.toggleTurnLightLeft = function () {
-        var url = "http://127.0.0.1:5000/cmd/o";
+        var url = this.createUrl("cmd/o");
         return this.http.get(url).map(function (res) { return res.json(); });
     };
     BugService.prototype.toggleTurnLightRight = function () {
-        var url = "http://127.0.0.1:5000/cmd/p";
+        var url = this.createUrl("cmd/p");
         return this.http.get(url).map(function (res) { return res.json(); });
     };
     BugService.prototype.toggleWarningLights = function () {
-        var url = "http://127.0.0.1:5000/cmd/w";
+        var url = this.createUrl("cmd/w");
         return this.http.get(url).map(function (res) { return res.json(); });
     };
     BugService.prototype.status = function () {
-        var url = "http://127.0.0.1:5000/status";
+        var url = this.createUrl("status");
         return this.http.get(url).map(function (res) { return res.json(); });
     };
     return BugService;

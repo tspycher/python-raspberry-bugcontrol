@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {BugService} from "./bug";
+import { DOCUMENT } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'bug',
@@ -8,11 +10,12 @@ import {BugService} from "./bug";
 })
 export class AppComponent  {
 
-      private statusThread;
+      private statusThread:any;
 
-      constructor(private bug:BugService) {
+      constructor(private bug:BugService, @Inject(DOCUMENT) private document:any) {
           //this.updateStatus()
-        this.startLive();
+          this.startLive();
+          this.bug.setBaseUrl(this.document.location.href);
       }
 
       startLive() {
