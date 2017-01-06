@@ -17,6 +17,7 @@ var BugService = (function () {
         configurable: true
     });
     BugService.prototype.setBaseUrl = function (url) {
+        console.log(url);
         this.baseurl = url;
     };
     BugService.prototype.createUrl = function (url) {

@@ -18,6 +18,7 @@ export class BugService {
   }
 
   setBaseUrl(url:string) {
+      console.log(url);
       this.baseurl = url;
   }
 

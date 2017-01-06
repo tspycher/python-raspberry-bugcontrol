@@ -21,7 +21,8 @@ var AppComponent = (function () {
         this.status = {};
         //this.updateStatus()
         this.startLive();
-        this.bug.setBaseUrl(this.document.location.href);
+        //console.log(this.document.location);
+        this.bug.setBaseUrl(this.document.location.protocol + "//" + this.document.location.host + "/");
     }
     AppComponent.prototype.startLive = function () {
         var _this = this;

@@ -15,7 +15,8 @@ export class AppComponent  {
       constructor(private bug:BugService, @Inject(DOCUMENT) private document:any) {
           //this.updateStatus()
           this.startLive();
-          this.bug.setBaseUrl(this.document.location.href);
+          //console.log(this.document.location);
+          this.bug.setBaseUrl(this.document.location.protocol+"//"+this.document.location.host+"/");
       }
 
       startLive() {
