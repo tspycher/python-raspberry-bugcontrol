@@ -3,11 +3,18 @@ from lib import Bug
 import logging
 from flask_cors import CORS, cross_origin
 
+DEFAULT_FLASHTIMES = 3
+
 def create_app():
     app = flask.Flask(__name__, static_url_path='/web', static_folder='../static-web')
     app.logger.setLevel(logging.INFO)
-    CORS(app)
+    CORS(app, expose_headers='X-Server-Identity')
     bug = Bug(logger=app.logger)
+
+    @app.after_request
+    def set_server_identity_header(response):
+        response.headers["X-Server-Identity"] = "BUGCONTROL"
+        return response
 
     @app.route("/")
     def index():
@@ -21,7 +28,13 @@ def create_app():
 
     @app.route("/status")
     def status():
-        return flask.jsonify(**bug.getGpioState())
+        state = bug.getGpioState()
+        state['warning'] = True if bug.warning else False
+        state['flash'] = True if bug.flash else False
+        state['flash_count'] = 0 if not bug.flash else bug.flash
+        state['blink_interval'] = Bug.INTERVAL
+        state['default_flash'] = DEFAULT_FLASHTIMES
+        return flask.jsonify(**state)
 
     @app.route("/cmd/l")
     def toggleLowBeamLight():
@@ -35,7 +48,7 @@ def create_app():
 
     @app.route("/cmd/f")
     def doFlash():
-        bug.doFlash()
+        bug.doFlash(times=DEFAULT_FLASHTIMES)
         return flask.jsonify(**bug.getGpioState())
 
     @app.route("/cmd/o")

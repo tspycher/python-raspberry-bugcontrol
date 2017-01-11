@@ -27,6 +27,7 @@ class Bug(object):
     turnlight_left = None
     turnlight_right = None
     flash = None
+    warning = None
     _previous_state_headlight_left = None
     _previous_state_headlight_right = None
     _previous_state_turnlight_left = None
@@ -174,10 +175,12 @@ class Bug(object):
         if self.turnlight_right or self.turnlight_left:
             self.turnlight_right = False
             self.turnlight_left = False
+            self.warning = False
             return False
 
         self.turnlight_right = True
         self.turnlight_left = True
+        self.warning = True
         return True
 
     def diff_dict(self, new, old):
