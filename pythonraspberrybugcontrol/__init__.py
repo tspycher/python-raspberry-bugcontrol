@@ -20,7 +20,7 @@ def create_app():
     def index():
         result = ['<pre>%s</pre>' % bug.graphic]
         result.append('<ul>')
-        for x in ['l', 'h', 'f', 'o', 'p', 'w']:
+        for x in ['l', 'h', 'f', 'o', 'p', 'w', 's']:
             result.append('<a href="/cmd/%(cmd)s">%(cmd)s</a>' % {'cmd': x})
 
         result.append('</ul>')
@@ -30,6 +30,7 @@ def create_app():
     def status():
         state = bug.getGpioState()
         state['warning'] = True if bug.warning else False
+        state['static_warning'] = True if bug.static_warning else False
         state['flash'] = True if bug.flash else False
         state['flash_count'] = 0 if not bug.flash else bug.flash
         state['blink_interval'] = Bug.INTERVAL
@@ -64,6 +65,11 @@ def create_app():
     @app.route("/cmd/w")
     def toggleWarningLights():
         bug.toggleWarningLights()
+        return flask.jsonify(**bug.getGpioState())
+
+    @app.route("/cmd/s")
+    def toggleStaticWarningLights():
+        bug.toggleStaticWarningLights()
         return flask.jsonify(**bug.getGpioState())
 
     return (app, bug)

@@ -28,6 +28,8 @@ class Bug(object):
     turnlight_right = None
     flash = None
     warning = None
+    static_warning = None
+
     _previous_state_headlight_left = None
     _previous_state_headlight_right = None
     _previous_state_turnlight_left = None
@@ -102,6 +104,8 @@ class Bug(object):
 
     @property
     def turnlightL(self):
+        if self.static_warning:
+            return True
         if self.turnlight_left:
             if self._previous_state_turnlight_left:
                 self._previous_state_turnlight_left = False
@@ -112,6 +116,8 @@ class Bug(object):
 
     @property
     def turnlightR(self):
+        if self.static_warning:
+            return True
         if self.turnlight_right:
             if self._previous_state_turnlight_right:
                 self._previous_state_turnlight_right = False
@@ -156,6 +162,8 @@ class Bug(object):
         return self.flash
 
     def toggleTurnLightLeft(self):
+        self.static_warning = False
+        self.warning = False
         if self.turnlight_left:
             self.turnlight_left = False
         else:
@@ -164,6 +172,8 @@ class Bug(object):
         return self.turnlight_left
 
     def toggleTurnLightRight(self):
+        self.static_warning = False
+        self.warning = False
         if self.turnlight_right:
             self.turnlight_right = False
         else:
@@ -176,11 +186,27 @@ class Bug(object):
             self.turnlight_right = False
             self.turnlight_left = False
             self.warning = False
+            self.static_warning = False
             return False
 
         self.turnlight_right = True
         self.turnlight_left = True
         self.warning = True
+        self.static_warning = False
+        return True
+
+    def toggleStaticWarningLights(self):
+        if self.turnlight_right or self.turnlight_left:
+            self.turnlight_right = False
+            self.turnlight_left = False
+            self.warning = False
+            self.static_warning = False
+            return False
+
+        self.turnlight_right = True
+        self.turnlight_left = True
+        self.warning = False
+        self.static_warning = True
         return True
 
     def diff_dict(self, new, old):
@@ -227,7 +253,7 @@ class Bug(object):
                 if not c == -1:
                     cmd = str(chr(c)).lower()
                     if cmd == '?':
-                        stdscr.addstr(0, 2, "f = flash, w = warning, h = headlight, l = lowbeam, o = turnleft, p = turnright")
+                        stdscr.addstr(0, 2, "f = flash, w = warning, s = static_warning, h = headlight, l = lowbeam, o = turnleft, p = turnright")
                     else:
                         self._interpretInput(cmd)
                     del c
@@ -243,6 +269,8 @@ class Bug(object):
             self.doFlash(times=3)
         elif input == "w":
             self.toggleWarningLights()
+        elif input == "s":
+            self.toggleStaticWarningLights()
         elif input == "h":
             self.toggleHeadLight()
         elif input == "l":
