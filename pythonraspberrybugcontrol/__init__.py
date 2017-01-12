@@ -29,8 +29,12 @@ def create_app():
     @app.route("/status")
     def status():
         state = bug.getGpioState()
+        state['turnlight_left_on'] = True if bug.turnlight_left_on else False
+        state['turnlight_right_on'] = True if bug.turnlight_right_on else False
+        state['warning'] = True if bug.warning else False
         state['warning'] = True if bug.warning else False
         state['flash'] = True if bug.flash else False
+        state['flashing'] = True if bug.flash > 0 else False
         state['flash_count'] = 0 if not bug.flash else bug.flash
         state['blink_interval'] = Bug.INTERVAL
         state['default_flash'] = DEFAULT_FLASHTIMES

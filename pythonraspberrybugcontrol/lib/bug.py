@@ -26,6 +26,8 @@ class Bug(object):
     lowbeam = None
     turnlight_left = None
     turnlight_right = None
+    turnlight_left_on = False
+    turnlight_right_on = False
     flash = None
     warning = None
     _previous_state_headlight_left = None
@@ -156,6 +158,7 @@ class Bug(object):
         return self.flash
 
     def toggleTurnLightLeft(self):
+        self.turnlight_left_on = not self.turnlight_left_on
         if self.turnlight_left:
             self.turnlight_left = False
         else:
@@ -164,6 +167,7 @@ class Bug(object):
         return self.turnlight_left
 
     def toggleTurnLightRight(self):
+        self.turnlight_right_on = not self.turnlight_right_on
         if self.turnlight_right:
             self.turnlight_right = False
         else:
