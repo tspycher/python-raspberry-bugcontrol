@@ -35,7 +35,6 @@ def create_app():
         state['warning'] = True if bug.warning else False
         state['static_warning'] = True if bug.static_warning else False
         state['flash'] = True if bug.flash else False
-        state['flashing'] = True if bug.flash > 0 else False
         state['flash_count'] = 0 if not bug.flash else bug.flash
         state['blink_interval'] = Bug.INTERVAL
         state['default_flash'] = DEFAULT_FLASHTIMES
